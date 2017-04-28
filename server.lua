@@ -1,3 +1,7 @@
+require "resources/essentialmode/lib/MySQL"
+MySQL:open("localhost", "gta5_gamemode_essential", "root", "password")
+
+
 player_jobs = {}
 
 AddEventHandler("showid:getPlayerJob", function(user, cb)
