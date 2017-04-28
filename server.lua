@@ -1,31 +1,38 @@
+TriggerEvent('es:addCommand', 'id', function(source, args, user)
+	TriggerEvent('es:getPlayerFromId', source, function(user)
+		local pos = user.coords
 
-AddEventHandler('chatMessage', function(source, name, msg)
-	sm = stringsplit(msg, " ");
-	
-	if sm[1] == "/showid" then
-		CancelEvent();
-		if tablelength(sm) > 1 then
-			random_month = math.random(1, 12);
-			random_day = math.random(1, 31);
-			random_year = math.random(1936, 2002);
-			TriggerClientEvent('chatMessage', -1, "^4ID", {255, 0, 0}, GetPlayerName(source) .. "(#" .. source .. ") shows ID: First: ^2" .. sm[2] .. "^0, Last: ^2" .. sm[3] .. "^0 | DOB:^2" .. random_month .. "/" .. random_day .. "/" .. random_year);
+		TriggerEvent('es:getPlayers', function(players)
+		for id,_ in pairs(players) do
+			if(GetPlayerName(id))then
+				TriggerEvent('es:getPlayerFromId', id, function(target)
+					local pPos = target.coords
+
+					local range = get3DDistance(pos.x, pos.y, pos.z, pPos.x, pPos.y, pPos.z)
+
+					local tag = ""
+					for k,v in ipairs(tags)do
+						if(user.permission_level >= v.rank)then
+							tag = v.tag
+						end
+					end
+
+					TriggerEvent("es_roleplay:getPlayerJob", user.identifier, function(job)
+						local dJob = "None"
+						if(job)then
+							dJob = job.job .. " ^0(^2" .. job.id .. "^0)"
+						end
+
+						if(range < 10.0)then
+							TriggerClientEvent('chatMessage', id, "", {0, 0, 200}, "^2" .. GetPlayerName(source) .. "'s ID")
+							TriggerClientEvent('chatMessage', id, "", {0, 0, 200}, "Name: ^2" .. GetPlayerName(source) .. "")
+							TriggerClientEvent('chatMessage', id, "", {0, 0, 200}, "Job: ^2" .. dJob)
+						end
+
+					end)
+				end)
+			end
 		end
-	end
+	end)
+	end)
 end)
-
-function stringsplit(self, delimiter)
-	local a = self:Split(delimiter)
-	local t = {}
-	
-	for i = 0, #a - 1 do
-		table.insert(t, a[i])
-	end
-	
-	return t
-end
-
-function tablelength(T)
-	local count = 0
-	for _ in pairs(T) do count = count + 1 end
-	return count
-end
