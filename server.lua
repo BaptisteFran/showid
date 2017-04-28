@@ -1,3 +1,5 @@
+player_jobs = {}
+
 AddEventHandler("showid:getPlayerJob", function(user, cb)
 	if(cb ~= nil)then
 		cb(player_jobs[user])
