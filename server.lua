@@ -1,3 +1,10 @@
+AddEventHandler("showid:getPlayerJob", function(user, cb)
+	if(cb ~= nil)then
+		cb(player_jobs[user])
+	end
+end)
+
+
 TriggerEvent('es:addCommand', 'id', function(source, args, user)
 	TriggerEvent('es:getPlayerFromId', source, function(user)
 		local pos = user.coords
@@ -17,7 +24,7 @@ TriggerEvent('es:addCommand', 'id', function(source, args, user)
 						end
 					end
 
-					TriggerEvent("es_roleplay:getPlayerJob", user.identifier, function(job)
+					TriggerEvent("showid:getPlayerJob", user.identifier, function(job)
 						local dJob = "None"
 						if(job)then
 							dJob = job.job .. " ^0(^2" .. job.id .. "^0)"
